@@ -9,6 +9,7 @@ namespace SocketOpgave.Models
     public class SaleItem
     {
         public int Id { get; set; }
+        public string Name { get; set; }
         public float MinPrice { get; set; }
         public float SalePrice { get; set; }
         public TimeSpan AuctionLength { get; set; }

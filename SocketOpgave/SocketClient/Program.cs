@@ -52,19 +52,23 @@ namespace Client
                     // we will send to Server
                     byte[] messageSent = Encoding.ASCII.GetBytes("Test Client<EOF>");
                     int byteSent = sender.Send(messageSent);
+                    int i = 0;
+                    while (i<10)
+                    {
+                        // Data buffer
+                        byte[] messageReceived = new byte[1024];
 
-                    // Data buffer
-                    byte[] messageReceived = new byte[1024];
-
-                    // We receive the message using
-                    // the method Receive(). This
-                    // method returns number of bytes
-                    // received, that we'll use to
-                    // convert them to string
-                    int byteRecv = sender.Receive(messageReceived);
-                    Console.WriteLine("Message from Server -> {0}",
-                        Encoding.ASCII.GetString(messageReceived,
-                                                    0, byteRecv));
+                        // We receive the message using
+                        // the method Receive(). This
+                        // method returns number of bytes
+                        // received, that we'll use to
+                        // convert them to string
+                        int byteRecv = sender.Receive(messageReceived);
+                        Console.WriteLine("Message from Server -> {0}",
+                            Encoding.ASCII.GetString(messageReceived,
+                                                        0, byteRecv));
+                        i++;
+                    }
 
                     // Close Socket using
                     // the method Close()

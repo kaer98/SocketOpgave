@@ -3,16 +3,18 @@ using System;
 using System.Net;
 using System.Net.Sockets;
 using System.Text;
+using SocketOpgave.Models;
 
 namespace Server
 {
 
     class Program
     {
-
+        private static List<SaleItem> SaleItems { get; set; } = new List<SaleItem>();
         // Main Method
         static void Main(string[] args)
         {
+            MakeItems();
             ExecuteServer();
         }
 
@@ -74,11 +76,22 @@ namespace Server
                     }
 
                     Console.WriteLine("Text received -> {0} ", data);
-                    byte[] message = Encoding.ASCII.GetBytes("Test Server");
+                    for (int i=0; i<SaleItems.Count(); i++)
+                    {
+                        byte[] message = Encoding.ASCII.GetBytes(SaleItems[i].Name);
 
-                    // Send a message to Client
-                    // using Send() method
-                    clientSocket.Send(message);
+                        // Send a message to Client
+                        // using Send() method
+                        clientSocket.Send(message);
+                        if(i==SaleItems.Count()-1)
+                        {
+                           message = Encoding.ASCII.GetBytes("<EOF>");
+                            clientSocket.Send(message);
+                        }
+                        
+                    }
+                    
+
 
                     // Close client Socket using the
                     // Close() method. After closing,
@@ -93,6 +106,25 @@ namespace Server
             {
                 Console.WriteLine(e.ToString());
             }
+        }
+
+        private static void MakeItems()
+        {
+            SaleItem si = new SaleItem();
+            si.Id = 1;
+            si.AuctionLength = TimeSpan.FromSeconds(10);
+            si.StartTime = DateTime.Now;
+            si.MinPrice = 100f;
+            si.Name = "stol";
+            SaleItems.Add(si);
+            SaleItem si1 = new SaleItem();
+            si1.Id = 2;
+            si1.AuctionLength = TimeSpan.FromSeconds(10);
+            si1.StartTime = DateTime.Now;
+            si1.MinPrice = 100f;
+            si1.Name = "bord";
+            SaleItems.Add(si1);
+
         }
     }
 }
