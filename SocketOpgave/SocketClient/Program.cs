@@ -52,8 +52,10 @@ namespace Client
                     // we will send to Server
                     byte[] messageSent = Encoding.ASCII.GetBytes("Test Client<EOF>");
                     int byteSent = sender.Send(messageSent);
+
+
                     int i = 0;
-                    while (i<10)
+                    while (i<5)
                     {
                         // Data buffer
                         byte[] messageReceived = new byte[1024];
@@ -69,6 +71,9 @@ namespace Client
                                                         0, byteRecv));
                         i++;
                     }
+                    string answer = Console.ReadLine();
+                    byte[] answerByte = Encoding.ASCII.GetBytes(answer);
+                    sender.Send(answerByte);
 
                     // Close Socket using
                     // the method Close()

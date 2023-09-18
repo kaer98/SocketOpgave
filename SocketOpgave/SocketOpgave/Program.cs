@@ -72,25 +72,33 @@ namespace Server
                                                 0, numByte);
 
                         if (data.IndexOf("<EOF>") > -1)
+
                             break;
                     }
 
                     Console.WriteLine("Text received -> {0} ", data);
+                    string ListOfItems = "\n";
                     for (int i=0; i<SaleItems.Count(); i++)
                     {
-                        byte[] message = Encoding.ASCII.GetBytes(SaleItems[i].Name);
-
-                        // Send a message to Client
-                        // using Send() method
-                        clientSocket.Send(message);
-                        if(i==SaleItems.Count()-1)
-                        {
-                           message = Encoding.ASCII.GetBytes("<EOF>");
-                            clientSocket.Send(message);
-                        }
-                        
+                        ListOfItems += SaleItems[i].Name + " " + SaleItems[i].MinPrice + "\n";
                     }
-                    
+                    byte[] message = Encoding.ASCII.GetBytes(ListOfItems);
+
+                    // Send a message to Client
+                    // using Send() method
+                    clientSocket.Send(message);
+
+                    string endOfListMessage = "hvad vil du";
+                    byte[] endOfListBytes = Encoding.ASCII.GetBytes(endOfListMessage);
+                    clientSocket.Send(endOfListBytes);
+
+                    //byte[] recievedMessage = new byte[1024];
+                    //string data2 = "";
+                    //int numByte2 = clientSocket.Receive(recievedMessage);
+                    //data2 += Encoding.ASCII.GetString(recievedMessage,0, numByte2);
+
+
+                                     
 
 
                     // Close client Socket using the
@@ -117,6 +125,8 @@ namespace Server
             si.MinPrice = 100f;
             si.Name = "stol";
             SaleItems.Add(si);
+
+
             SaleItem si1 = new SaleItem();
             si1.Id = 2;
             si1.AuctionLength = TimeSpan.FromSeconds(10);
@@ -124,6 +134,14 @@ namespace Server
             si1.MinPrice = 100f;
             si1.Name = "bord";
             SaleItems.Add(si1);
+            
+            SaleItem si2 = new SaleItem();
+            si2.Id = 3;
+            si2.AuctionLength = TimeSpan.FromSeconds(10);
+            si2.StartTime = DateTime.Now;
+            si2.MinPrice = 100f;
+            si2.Name = "seng";
+            SaleItems.Add(si2);
 
         }
     }
